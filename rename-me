@@ -1,2 +1,56 @@
 #! /bin/bash
+#
+# README.md: 
+# https://github.com/rayelnigma/bash-boilerplate/blob/master/README.md
+# 
+# A boilerplate/template for a bash script.  The intention 
+# of this script is so that I can copy/paste it into a new 
+# location, rename the script, and then start writing code.  
+# Having functionality to all of my favorite features that 
+# I 'grew up with' ;-)
+#
+
+# remember to replace the 'rename-me' with your new script name
+_THIS_SCRIPT="rename-me"
+_LOG_DIR="/var/log/$_THIS_SCRIPT"
+LOG="$_LOG_DIR/$_THIS_SCRIPT.log"
+
+# make sure we can do our logging to the file system...
+mkdir -p $_LOG_DIR
+if [ $? == "1" ] 
+  then
+    echo "error creating ${_LOG_DIR}, exiting"
+	  exit 1
+fi
+
+function log() {
+	DATE="date +%Y%m%d%H%M%S"
+	echo "$($DATE) $1"
+	echo "$($DATE) $1" >> $LOG
+}
+
+function logVariable() {
+	log "$1=${!1}"
+}
+
+function begin() {
+	log "--> Begin ${1} ------>"
+}
+
+function end() {
+	log "<-------- ${1} End <--"
+}
+
+function initialize() {
+	begin "initialize"
+	logVariable _THIS_SCRIPT
+	logVariable LOG
+	# more variables go here:
+	
+	end "initialize"
+}
+
+initialize
+
+
 
