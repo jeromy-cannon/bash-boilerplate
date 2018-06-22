@@ -9,4 +9,3 @@ A boilerplate/template for a bash script.  The intention of this script is so th
 This is my first attempt at an open source project, give 'constructive' feedback if you wish :-)
 
 ## Instructions
-
