@@ -12,11 +12,12 @@
 
 # remember to replace the 'rename-me' with your new script name
 _THIS_SCRIPT="rename-me"
-_LOG_DIR="/var/log/$_THIS_SCRIPT"
-LOG="$_LOG_DIR/$_THIS_SCRIPT.log"
+_LOG_DIR="/var/log/${_THIS_SCRIPT}"
+LOG="${_LOG_DIR}/${_THIS_SCRIPT}.log"
+debug="true"
 
 # make sure we can do our logging to the file system...
-mkdir -p $_LOG_DIR
+mkdir -p ${_LOG_DIR}
 if [ $? == "1" ] 
   then
     echo "error creating ${_LOG_DIR}, exiting"
@@ -25,31 +26,57 @@ fi
 
 function log() {
 	DATE="date +%Y%m%d%H%M%S"
-	echo "$($DATE) $1"
-	echo "$($DATE) $1" >> $LOG
+	echo "$(${DATE}):${1}: ${2}"
+	echo "$(${DATE}):${1}: ${2}" >> ${LOG}
+}
+
+function debug() {
+	if [ ${debug} == "true" ]
+	  then
+		  log "D" "${1}"
+	fi
+}
+
+function info() {
+  log "I" "${1}"
+}
+
+function warn() {
+	log "W" "${1}"
+}
+
+function error() {
+	log "E" "${1}"
+}
+
+function fatal() {
+	log "F" "${1}"
+	die "${1}"
 }
 
 function logVariable() {
-	log "$1=${!1}"
+	debug "${1}=${!1}"
 }
 
 function begin() {
-	log "--> Begin ${1} ------>"
+	debug "--> begin... ${1} --------->"
 }
 
 function end() {
-	log "<-------- ${1} End <--"
+	debug "<----------- ${1} ...end <--"
 }
 
 function initialize() {
-	begin "initialize"
+	begin "INITIALIZE"
 	logVariable _THIS_SCRIPT
 	logVariable LOG
+	logVariable debug
 	# more variables go here:
-	
-	end "initialize"
+
+	end "INITIALIZE"
 }
 
+#debug="false"
 initialize
 
 
